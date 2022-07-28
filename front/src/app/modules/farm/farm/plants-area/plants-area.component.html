@@ -1,0 +1,9 @@
+<div *ngIf="plots && plots.length > 0" class="grid">
+    <div 
+        *ngFor="let plot of plots"
+        class="square"
+        [ngClass]="getSquareStateClass(plot)"
+    >
+        {{ plot.id }}
+    </div>
+</div>

@@ -1,0 +1,28 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1rem;
+}
+
+.square {
+    height: 50px;
+    width: 50px;
+    border: solid 1px black;
+    border-radius: 5px;
+}
+
+.wateredPlot {
+    background-color: blue;
+}
+
+.dryPlot {
+    background-color: brown;
+}
+
+.withPlant {
+    background-color: green;
+}
+
+.wildPlot {
+    background-color: red;
+}

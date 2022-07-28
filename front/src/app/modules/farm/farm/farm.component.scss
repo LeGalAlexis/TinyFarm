@@ -1,0 +1,17 @@
+.farmLayout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.toolsPanel {
+    width: 15%;
+}
+
+.plantsArea {
+    flex: auto;
+}
+
+.detailsPanel {
+    width: 20%;
+}
