@@ -1,9 +1,26 @@
-<div *ngIf="plots && plots.length > 0" class="grid">
+<p>{{ selectedTool }}</p>
+<div *ngIf="_plots && _plots.length > 0" class="grid">
     <div 
-        *ngFor="let plot of plots"
+        *ngFor="let plot of _plots"
         class="square"
+        [style.grid-row-start]="getRowStart(plot.id)"
+        [style.grid-row-end]="getRowEnd(plot.id)"
+        [style.grid-column-start]="getColumnStart(plot.id)"
+        [style.grid-column-end]="getColumnEnd(plot.id)"
         [ngClass]="getSquareStateClass(plot)"
     >
         {{ plot.id }}
+    </div>
+    <div
+        *ngFor="let selection of selectedPlots"
+        class="selectionSquare"
+        [ngClass]="{'isSelected': selection.isSelected}"
+        [style.grid-row-start]="getRowStart(selection.id)"
+        [style.grid-row-end]="getRowEnd(selection.id)"
+        [style.grid-column-start]="getColumnStart(selection.id)"
+        [style.grid-column-end]="getColumnEnd(selection.id)"
+        (click)="selectSquare(selection)"
+    >
+        
     </div>
 </div>

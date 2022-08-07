@@ -1,6 +1,5 @@
 import { Injectable, PLATFORM_ID } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { PlantInPlot } from '../models/plantInPlot';
 import { Plot } from '../models/plot';
 
 export interface FarmState {
@@ -8,7 +7,7 @@ export interface FarmState {
 }
 
 const defaultState: FarmState = {
-  plots: new Array(10).fill(null).map((_, i) => { return { id: i, isWild: true, isDry: true, growingPlant: undefined } }),
+  plots: new Array(25).fill(null).map((_, i) => { return { id: i, isWild: true, isDry: true, growingPlant: undefined } }),
 };
 
 @Injectable()
