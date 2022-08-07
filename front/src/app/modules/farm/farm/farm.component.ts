@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FarmingCommand } from '../models/farmingCommand';
 import { FarmingTools } from '../models/farmingTools';
 import { FarmStore } from './farm-store.service';
+import { FarmService } from './farm.service';
 
 @Component({
   selector: 'app-farm',
@@ -17,9 +18,10 @@ export class FarmComponent implements OnInit {
 
   public newCommand: FarmingCommand | undefined;
 
-  constructor(private readonly farmStore: FarmStore) { }
+  constructor(public readonly farmStore: FarmStore, private farmService: FarmService) { }
 
   ngOnInit(): void {
+    this.farmService.getPlots().subscribe(p => this.farmStore.loadPlots(p));
   }
 
   public selectTool($event: FarmingTools): void {
@@ -27,7 +29,7 @@ export class FarmComponent implements OnInit {
   }
 
   public sendNewCommand($event: FarmingCommand): void {
-    this.newCommand = $event;
+    this.farmStore.applyCommand($event);
   }
 
 }

@@ -34,7 +34,7 @@ export class PlantsAreaComponent implements OnInit {
 
   private debounceTimeout: any;
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
