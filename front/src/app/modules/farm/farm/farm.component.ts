@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { FarmingCommand } from '../models/farmingCommand';
 import { FarmingTools } from '../models/farmingTools';
 import { Plot } from '../models/plot';
+import { Seed } from '../models/seed';
 import { FarmStore } from './farm-store.service';
 import { FarmService } from './farm.service';
 
@@ -15,17 +16,18 @@ import { FarmService } from './farm.service';
 export class FarmComponent implements OnInit {
 
   public plots$: BehaviorSubject<Plot[]> = new BehaviorSubject([] as Plot[]);
+  public selectedSeed$: BehaviorSubject<Seed | undefined> = new BehaviorSubject(undefined as Seed | undefined);
 
   public selectedTool: FarmingTools = FarmingTools.eyes;
 
-  public selectedPlot: Plot | undefined = undefined;
-
-  public newCommand: FarmingCommand | undefined;
+  public selectedPlot: Plot | undefined;
+  public selectedSeed: Seed | undefined;
 
   constructor(public readonly farmStore: FarmStore, private farmService: FarmService) { }
 
   ngOnInit(): void {
     this.farmStore.plots$.subscribe(this.plots$);
+    this.farmStore.seed$.subscribe(this.selectedSeed$);
     this.farmService.getPlots().subscribe(p => this.farmStore.loadPlots(p));
   }
 
@@ -39,6 +41,10 @@ export class FarmComponent implements OnInit {
     } else {
       this.farmStore.applyCommand($event);
     }
+  }
+
+  public selectSeed($event: Seed): void {
+    this.selectedSeed = $event;
   }
 
 }

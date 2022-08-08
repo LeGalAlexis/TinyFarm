@@ -9,8 +9,19 @@
         [style.grid-column-end]="getColumnEnd(plot.id)"
         [ngClass]="getSquareStateClass(plot)"
     >
-        {{ plot.id }}
     </div>
+
+    <div
+        *ngFor="let timer of displayedTimers"
+        class="displayedTimer"
+        [style.grid-row-start]="getRowStart(timer.id)"
+        [style.grid-row-end]="getRowEnd(timer.id)"
+        [style.grid-column-start]="getColumnStart(timer.id)"
+        [style.grid-column-end]="getColumnEnd(timer.id)"
+    >
+     {{ timer.hasPlant ? timer.value : '' }}
+    </div>
+
     <div
         *ngFor="let selection of selectedPlots"
         class="selectionSquare"
@@ -21,6 +32,5 @@
         [style.grid-column-end]="getColumnEnd(selection.id)"
         (click)="selectSquare(selection)"
     >
-        
     </div>
 </div>

@@ -6,6 +6,8 @@ import { PlantsAreaComponent } from './farm/plants-area/plants-area.component';
 import { FarmComponent } from './farm/farm.component';
 import { ToolsComponent } from './farm/tools/tools.component';
 import { PlantDetailsComponent } from './farm/plant-details/plant-details.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { PlantDetailsComponent } from './farm/plant-details/plant-details.compon
   ],
   imports: [
     CommonModule,
-    FarmRoutingModule
+    FarmRoutingModule,
+    NgSelectModule, 
+    FormsModule
   ]
 })
 export class FarmModule { }

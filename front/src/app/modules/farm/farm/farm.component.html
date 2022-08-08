@@ -1,8 +1,10 @@
 <div class="farmLayout">
-    <div class="toolsPanel"><app-tools [selectedTool]="selectedTool" (selectedToolChange)="selectTool($event)"></app-tools></div>
+    <div class="toolsPanel">
+        <app-tools [selectedTool]="selectedTool" (selectedToolChange)="selectTool($event)"></app-tools>
+    </div>
     <div class="plantsArea">
         <app-plants-area [plots]="plots$ | async" [selectedTool]="selectedTool" (newCommand)="sendNewCommand($event)"></app-plants-area>
-        <p *ngIf="newCommand">{{ newCommand | json }}</p>
+        <p *ngIf="selectedSeed">{{ selectedSeed | json }}</p>
     </div>
     <div class="detailsPanel"><app-plant-details [plot]="selectedPlot"></app-plant-details></div>
 </div>

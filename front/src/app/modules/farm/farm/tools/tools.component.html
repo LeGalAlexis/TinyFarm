@@ -2,3 +2,12 @@
 <button (click)="selectTool(FarmingTools.eyes)">eyes</button>
 <button (click)="selectTool(FarmingTools.hoe)">hoe</button>
 <button (click)="selectTool(FarmingTools.watering)">watering</button>
+<button (click)="selectTool(FarmingTools.plant)">plant seed</button>
+
+<ng-select 
+        *ngIf="selectedTool === FarmingTools.plant"
+        [(ngModel)]="selectedSeed"
+        [clearable]="false"
+        (change)="onSelectedSeedChange($event)">
+    <ng-option *ngFor="let seed of seeds" [value]="seed.id">{{seed.name}}</ng-option>
+</ng-select>

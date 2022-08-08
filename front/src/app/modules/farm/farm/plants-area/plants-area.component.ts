@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FarmingCommand } from '../../models/farmingCommand';
 import { FarmingTools } from '../../models/farmingTools';
 import { Plot } from '../../models/plot';
@@ -9,32 +9,60 @@ export interface SelectablePlot {
   isError: boolean;
 }
 
+export interface TimerPlot {
+  id: number,
+  hasPlant: boolean,
+  value: string;
+}
+
 @Component({
   selector: 'app-plants-area',
   templateUrl: './plants-area.component.html',
-  styleUrls: ['./plants-area.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./plants-area.component.scss']
 })
-export class PlantsAreaComponent implements OnInit {
+export class PlantsAreaComponent implements OnInit, OnDestroy {
 
   public _plots: Plot[] | null = [];
 
   @Input() set plots(value: Plot[] | null) {
     this._plots = value;
-    this.selectedPlots = new Array(value?.length).fill(null).map((_, i) => { return { id: i, isSelected: false, isError: false } })
+    this.selectedPlots = new Array(value?.length).fill(null).map((_, i) => { return { id: i, isSelected: false, isError: false } });
+    this.displayedTimers = value?.map(plot => { return { 
+      id: plot.id, 
+      value: this.getTimerValue(plot.growingPlant !== undefined, plot.growingPlant?.startTime ?? new Date(), plot.growingPlant?.plant.growthTime ?? 0), 
+      hasPlant: plot.growingPlant !== undefined 
+    } }) ?? [];
+    clearInterval(this.timersIntervalId);
+    if(value) {
+      // change to observable to continue onPush
+      this.timersIntervalId = setInterval(() => {
+        this.displayedTimers.forEach(t => {
+          let plot = this._plots?.find(p => p.id === t.id);
+          t.value = this.getTimerValue(plot?.growingPlant !== undefined, plot?.growingPlant?.startTime ?? new Date(), plot?.growingPlant?.plant.growthTime ?? 0);
+        });
+        this.cd.markForCheck;
+      }, 1000);
+    }
   }
 
   @Input()
   public selectedTool: FarmingTools = FarmingTools.eyes;
 
   public selectedPlots: SelectablePlot[] = [];
+  public displayedTimers: TimerPlot[] = [];
 
   @Output()
   public newCommand = new EventEmitter<FarmingCommand>();
 
   private debounceTimeout: any;
 
-  constructor() { }
+  private timersIntervalId: NodeJS.Timer | undefined;
+
+  constructor(private cd: ChangeDetectorRef) { }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timersIntervalId)
+  }
 
   ngOnInit(): void {
   }
@@ -96,8 +124,20 @@ export class PlantsAreaComponent implements OnInit {
         return plot.isWild;
       case FarmingTools.watering :
         return !plot.isWild && plot.isDry;
+      case FarmingTools.plant:
+        return !plot.isWild;
       default :
         throw new Error("No tools detected");
     }
+  }
+
+  private getTimerValue(hasPlant: boolean, startTime: Date, growingTime: number): string {
+    if(!hasPlant) {
+      return "";
+    }
+    let goalTime = startTime.getTime() + growingTime * 1000;
+    let timeBefore = Math.round((goalTime - (new Date()).getTime()) / 1000);
+    if (timeBefore < 0) { timeBefore = 0 }
+    return timeBefore + "(" + ((growingTime - timeBefore)/growingTime) * 100 + "%)";
   }
 }
