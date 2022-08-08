@@ -63,7 +63,12 @@ export class PlantsAreaComponent implements OnInit {
   }
 
   public selectSquare(plot: SelectablePlot): void {
-    if (this.canSelect(this._plots!.find(p => p.id === plot.id)!)) {
+    if (this.selectedTool === FarmingTools.eyes) {
+      this.newCommand.emit({
+        farmingTool: FarmingTools.eyes,
+        plotIds: [plot.id]
+      })
+    } else if (this.canSelect(this._plots!.find(p => p.id === plot.id)!)) {
       let selectedPlot = this.selectedPlots.find(p => p.id === plot.id);
       if(selectedPlot) {
         selectedPlot.isSelected = !selectedPlot.isSelected;

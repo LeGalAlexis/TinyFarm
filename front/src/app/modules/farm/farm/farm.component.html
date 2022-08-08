@@ -4,5 +4,5 @@
         <app-plants-area [plots]="plots$ | async" [selectedTool]="selectedTool" (newCommand)="sendNewCommand($event)"></app-plants-area>
         <p *ngIf="newCommand">{{ newCommand | json }}</p>
     </div>
-    <div class="detailsPanel">Details</div>
+    <div class="detailsPanel"><app-plant-details [plot]="selectedPlot"></app-plant-details></div>
 </div>
