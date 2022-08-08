@@ -1,5 +1,6 @@
 export enum FarmingTools {
     eyes = "eyes",
     hoe = "hoe",
-    watering = "watering"
+    watering = "watering",
+    plant = "plant"
 }
